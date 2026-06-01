@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal AgroSustentável Paraná - Sistema FAEP</title>
+    <style>
+        :root {
+            --primary-color: #1b5e20;
+            --secondary-color: #4caf50;
+            --accent-color: #81c784;
+            --light-bg: #f4f9f4;
+            --text-color: #2c3e50;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(rgba(27, 94, 32, 0.85), rgba(27, 94, 32, 0.95)), url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            color: var(--white);
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--accent-color);
+        }
+
+        nav {
+            background-color: var(--primary-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        nav a {
+            color: var(--white);
+            padding: 18px 25px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            background-color: var(--secondary-color);
+            color: var(--white);
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 40px auto;
+            padding: 0 25px;
+        }
+
+        section {
+            background-color: var(--white);
+            padding: 45px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+            display: none;
+        }
+
+        section.active {
+            display: block;
+            animation: slideUp 0.5s ease-in-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+            font-size: 2rem;
+        }
+
+        p {
+            margin-bottom: 22px;
+            font-size: 1.15rem;
+            text-align: justify;
+        }
+
+        .highlight-box {
+            background-color: #e8f5e9;
+            border-left: 6px solid var(--secondary-color);
+            padding: 25px;
+            border-radius: 0 12px 12px 0;
+            margin: 30px 0;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .grid-tech {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background-color: #fdfdfd;
+            border: 1px solid #e2e8f0;
+            padding: 25px;
+            border-radius: 10px;
+            border-top: 5px solid var(--secondary-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+
+        /* Estilos Interativos */
+        .quiz-container, .game-container {
+            background-color: #fafafa;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-top: 25px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .quiz-options button, .game-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--white);
+            border: 2px solid var(--accent-color);
+            color: var(--primary-color);
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 600;
+            transition: 0.2s;
+            text-align: left;
+        }
+
+        .quiz-options button:hover, .game-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+            font-size: 1.1rem;
+        }
+
+        .correct { background-color: #c8e6c9; color: #1b5e20; }
+        .incorrect { background-color: #ffcdd2; color: #b71c1c; }
+
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 25px;
+            margin-top: 60px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Agro Forte, Futuro Sustentável</h1>
+        <p>O Equilíbrio entre a Produção e o Meio Ambiente com o Apoio da FAEP</p>
+    </header>
+
+    <nav>
+        <a href="#" onclick="showSection('home')">Início</a>
+        <a href="#" onclick="showSection('equilibrio')">O Equilíbrio</a>
+        <a href="#" onclick="showSection('faep')">A Força da FAEP</a>
+        <a href="#" onclick="showSection('interativo')">Quiz & Jogo</a>
+    </nav>
+
+    <div class="container">
+        
+        <section id="home" class="active">
+            <h2>Um Olhar Humano Sobre o Nosso Chão</h2>
+            <p>Seja muito bem-vindo ao nosso espaço educativo! Longe de ser apenas uma plataforma com números frios, gráficos distantes ou dados abstratos de exportação, este portal é um manifesto de esperança e consciência, construído com muito carinho para o Concurso Agrinho de 2026.</p>
+            <p>Quando falamos sobre um <strong>"Agro Forte"</strong>, estamos falando essencialmente sobre a vida humana. Estamos celebrando a dedicação do agricultor que inicia sua jornada antes do amanhecer, o sustento das famílias que cuidam do campo e o empenho de toda uma comunidade que trabalha para alimentar o mundo. O campo e a cidade não são espaços isolados; eles pulsam juntos e compartilham a mesma responsabilidade sobre o nosso ecossistema.</p>
+            <div class="highlight-box">
+                "Produzir alimentos para saciar a fome do planeta e cuidar da integridade da natureza são dois lados da mesma moeda. O verdadeiro progresso só existe quando caminha de mãos dadas com a sustentabilidade."
+            </div>
+            <p>Para garantir que as futuras gerações tenham recursos abundantes, solo fértil e águas limpas, precisamos buscar o equilíbrio perfeito. E é exatamente essa união inteligente entre a proteção ambiental e a alta produtividade que queremos explorar ao longo deste projeto.</p>
+        </section>
+
+        <section id="equilibrio">
+            <h2>Produzir com Respeito: A Ciência do Campo</h2>
+            <p>Como podemos atender à crescente demanda por alimentos sem esgotar as riquezas naturais do nosso planeta? A resposta paranaense para esse desafio global envolve a união entre a sabedoria prática e a inovação tecnológica. A sustentabilidade no campo se manifesta diariamente através de métodos que protegem os ecossistemas:</p>
+            
+            <div class="grid-tech">
+                <div class="card">
+                    <h3>O Sistema de Plantio Direto</h3>
+                    <p>Essa técnica revolucionária evita a aragem agressiva do solo. Ao manter os resíduos vegetais da colheita anterior na superfície, cria-se uma camada orgânica protetora que conserva a umidade, previne a erosão e mantém os micro-organismos benéficos da terra ativos.</p>
+                </div>
+                <div class="card">
+                    <h3>Manejo Integrado de Pragas (MIP)</h3>
+                    <p>O MIP promove uma verdadeira parceria com a biologia. Em vez da aplicação indiscriminada de defensivos químicos, os produtores monitoram as lavouras e utilizam predadores naturais — como joaninhas e microvespas — para controlar insetos nocivos de maneira segura.</p>
+                </div>
+                <div class="card">
+                    <h3>Tecnologia de Precisão</h3>
+                    <p>Sensores conectados, drones de mapeamento e automação atuam como grandes aliados dos recursos hídricos. Eles identificam com precisão matemática a necessidade exata de água e nutrientes de cada área, evitando desperdícios e protegendo os lençóis freáticos.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="faep">
+            <h2>FAEP: O Pilar da Sustentabilidade e da Cidadania no Paraná</h2>
+            <p>É absolutamente impossível falar sobre a força, a modernização e o sucesso socioambiental do agronegócio paranaense sem aplaudir o trabalho monumental realizado pela <strong>FAEP (Federação da Agricultura do Estado do Paraná)</strong>. Há décadas, a FAEP atua não apenas como a voz oficial que defende os interesses dos produtores rurais, mas como o verdadeiro coração pensante do desenvolvimento sustentável em nosso estado.</p>
+            <p>Com uma visão humanizada e profundamente ligada ao bem-estar social, a FAEP entende que a transformação do campo começa pelo conhecimento. Por meio do trabalho conjunto com o SENAR-PR, a federação leva cursos gratuitos de capacitação técnica, gestão e educação ambiental para os lugares mais distantes do Paraná. Graças a esse apoio incansável, o pequeno, o médio e o grande produtor aprendem a usar tecnologias modernas de preservação, melhorando suas rendas enquanto cuidam das matas ciliares e das águas.</p>
+            <div class="highlight-box">
+                "A FAEP desempenha um papel digno de admiração: ela humaniza o agro, aproxima o campo da cidade e prova que o produtor rural é o maior guardião das nossas riquezas naturais."
+            </div>
+            <p>Além de toda a assistência técnica, a FAEP merece imenso reconhecimento por idealizar e manter vivo o <strong>Programa Agrinho</strong>, a maior iniciativa de responsabilidade social do país. Ao incentivar a pesquisa, a criatividade e a ética nas salas de aula das escolas públicas, a FAEP semeia a consciência ecológica na mente das nossas crianças e jovens. Nosso mais profundo elogio a essa instituição exemplar, que constrói pontes e molda os líderes sustentáveis do amanhã!</p>
+        </section>
+
+        <section id="interativo">
+            <h2>Área Interativa: Aprender Jogando</h2>
+            
+            <div class="quiz-container">
+                <h3>📝 Desafio Mentes Verdes</h3>
+                <div id="quiz-content">
+                    <p id="quiz-question"><strong>Pergunta:</strong> O que significa o conceito de "Futuro Sustentável" no Agro?</p>
+                    <div class="quiz-options" id="quiz-options">
+                        </div>
+                    <div id="quiz-feedback" class="feedback"></div>
+                </div>
+            </div>
+
+            <div class="game-container" style="margin-top: 40px;">
+                <h3>🎲 Jogo: Jornada do Jovem AgroLíder</h3>
+                <p id="game-text">Você assume o papel de um estudante consciente com uma nobre missão: ajudar a comunidade rural local a implementar práticas ecológicas. Uma propriedade da região está enfrentando sérios problemas de desgaste e erosão no solo devido às chuvas fortes. Como agir?</p>
+                <div id="game-choices">
+                    <button class="game-btn" onclick="playGame(1)">Opção A: Recomendar a limpeza total do terreno, retirando qualquer tipo de vegetação antiga.</button>
+                    <button class="game-btn" onclick="playGame(2)">Opção B: Aplicar os ensinamentos promovidos pela FAEP e implementar o Sistema de Plantio Direto.</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>© 2026 Projeto Agrinho - Em Parceria com o Conhecimento e a Consciência Ambiental</p>
+    </footer>
+
+    <script>
+        // Lógica de Navegação das Páginas
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(sec => sec.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        // Lógica do Quiz
+        const quizData = [
+            {
+                q: "Qual é o impacto principal das ações educativas promovidas pela FAEP e pelo SENAR-PR no campo?",
+                options: [
+                    "Incentivar o abandono das tecnologias para retornar às práticas antigas.",
+                    "Focar exclusivamente nos lucros, deixando os cuidados com a natureza de lado.",
+                    "Capacitar o produtor rural com técnicas modernas que equilibram alta produtividade e conservação ambiental.",
+                    "Substituir completamente a presença humana por robôs agrícolas."
+                ],
+                correct: 2,
+                feedback: "Excelente! Você compreendeu perfeitamente. O trabalho da FAEP garante conhecimento para produzir com total respeito ao meio ambiente!"
+            }
+        ];
+
+        function loadQuiz() {
+            const q = quizData[0];
+            document.getElementById('quiz-question').innerHTML = `<strong>Pergunta:</strong> ${q.q}`;
+            const optionsDiv = document.getElementById('quiz-options');
+            optionsDiv.innerHTML = '';
+            
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(index);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(index) {
+            const feedbackDiv = document.getElementById('quiz-feedback');
+            feedbackDiv.style.display = "block";
+            if(index === quizData[0].correct) {
+                feedbackDiv.className = "feedback correct";
+                feedbackDiv.innerText = quizData[0].feedback;
+            } else {
+                feedbackDiv.className = "feedback incorrect";
+                feedbackDiv.innerText = "Ops, vamos analisar melhor! Lembre-se do compromisso da FAEP em educar o campo para crescer em equilíbrio com o planeta.";
+            }
+        }
+
+        // Lógica do Jogo de Escolhas
+        function playGame(choice) {
+            const gameText = document.getElementById('game-text');
+            const gameChoices = document.getElementById('game-choices');
+
+            if (choice === 1) {
+                gameText.innerHTML = "<strong>Consequência:</strong> Sem cobertura protetora, a água das chuvas arrastou a camada fértil do solo, causando erosão e assoreando o riacho local. O terreno precisa urgentemente de cuidados. <strong>Próximo passo:</strong> Sabendo que a lavoura está sob ataque de pragas, o que você sugere?";
+                gameChoices.innerHTML = `
+                    <button class="game-btn" onclick="playGame(3)">Aplicar defensivos químicos de forma intensiva e em grande quantidade por toda a área.</button>
+                    <button class="game-btn" onclick="playGame(4)">Buscar o treinamento técnico oferecido pelo Sistema FAEP/SENAR para aplicar o Manejo Integrado de Pragas (MIP).</button>
+                `;
+            } else if (choice === 2) {
+                gameText.innerHTML = "<strong>Consequência:</strong> Decisão brilhante! A palhada protegeu a terra, reteve a umidade e salvou os nutrientes vitais do solo. A propriedade conquistou sua primeira meta de preservação! <strong>Próximo passo:</strong> Com o solo seguro, uma praga ameaça as folhas do cultivo. Qual rumo tomar?";
+                gameChoices.innerHTML = `
+                    <button class="game-btn" onclick="playGame(3)">Utilizar produtos químicos de modo agressivo sem monitoramento prévio.</button>
+                    <button class="game-btn" onclick="playGame(4)">Buscar a consultoria do Sistema FAEP/SENAR para utilizar o Manejo Integrado de Pragas (MIP).</button>
+                `;
+            } else if (choice === 3) {
+                gameText.innerHTML = "<strong>Fim de Jornada:</strong> O uso inadequado de químicos prejudicou o equilíbrio biológico do ambiente e contaminou a água. O ecossistema enfraqueceu. É hora de recomeçar a jornada e se aprofundar nos manuais de sustentabilidade da FAEP! Atualize a página para tentar novamente.";
+                gameChoices.innerHTML = '';
+            } else if (choice === 4) {
+                gameText.innerHTML = "<strong>🏆 VITÓRIA AMBIENTAL!</strong> Fantástico! O uso do MIP introduziu predadores naturais, combatendo as pragas de forma limpa e inteligente. Graças à difusão de conhecimento promovida pela FAEP, a propriedade tornou-se um modelo de agro sustentável de sucesso!";
+                gameChoices.innerHTML = '<button class="game-btn" onclick="location.reload()">Jogar Novamente</button>';
+            }
+        }
+
+        // Inicializar o Quiz ao carregar a página
+        loadQuiz();
+    </script>
+</body>
+</html>
